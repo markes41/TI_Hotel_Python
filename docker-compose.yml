@@ -1,0 +1,25 @@
+services:
+  db:
+    image: postgres
+    container_name: api-postgres
+    ports:
+        - "5432:5432"
+    volumes:
+        - ./database/data:/var/lib/postgresql/data
+    environment:
+        - POSTGRES_PASSWORD=123
+    networks:
+      - api-unlz
+  api:
+    build: ./app
+    image: api_hotel
+    container_name: apihotel
+    ports:
+      - 80:80
+    volumes:
+      - ./app:/app
+    networks:
+      - api-unlz
+networks:
+  api-unlz:
+    name: api-unlz
