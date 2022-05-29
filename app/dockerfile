@@ -4,7 +4,7 @@ WORKDIR /app
 
 COPY ./app.py /
 
-RUN pip install Flask psycopg2 gunicorn flask_sqlalchemy marshmallow
+RUN pip install Flask psycopg2 gunicorn flask_sqlalchemy marshmallow pyjwt
 
 COPY ./scripts/init.sql ./docker-entrypoint-initdb.d
 

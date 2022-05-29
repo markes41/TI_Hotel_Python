@@ -1,6 +1,6 @@
 from flask import Flask, request
 from flask_sqlalchemy import SQLAlchemy
-from models.Habitacion import Habitacion, HabitacionSchema
+from models.habitacion import Habitacion, HabitacionSchema
 from mkapp import db
 
 class HabitacionesServices:
