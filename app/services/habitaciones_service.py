@@ -1,43 +1,22 @@
-from flask import Flask, request
-from flask_sqlalchemy import SQLAlchemy
-from models.habitacion import Habitacion, HabitacionSchema
 from mkapp import db
+from models.habitacion import Habitacion, HabitacionSchema
 
-class HabitacionesServices:
+class Habitaciones_Service:
 
-    def agregar_habitacion():
-        precio = request.json["precio"]
-        reservada = request.json["reservada"]
-        fecha_reserva = request.json["fecha_Reserva"]
-        estado = request.json["estado"]
-
-        habitacion = Habitacion(precio, reservada, fecha_reserva, estado)
-
+    def agregar_habitacion(habitacion):
         db.session.add(habitacion)
         db.session.commit()
+
         return {"status": 200, "message": "Se agregó correctamente la habitación nueva."}
 
-    def modificar_habitacion(id):
-        precio = request.json["precio"]
-        reservada = request.json["reservada"]
-        fecha_reserva = request.json["fecha_Reserva"]
-        estado = request.json["estado"]
-
-        habitacion = Habitacion.query.get(id)
-        habitacion.precio = precio
-        habitacion.reservada = reservada
-        habitacion.fecha_reserva = fecha_reserva
-        habitacion.estado = estado    
-
+    def modificar_habitacion(habitacion):
         db.session.commit()
-        return {"status": 200, "message": "Se modificó correctamente la habitación con id: "+str(id)}
+        return {"status": 200, "message": "Se modificó correctamente la habitación con id: "+str(habitacion.id)}
 
-    def eliminar_habitacion(id):
-        habitacion = Habitacion.query.get(id)
-
+    def eliminar_habitacion(habitacion):
         db.session.delete(habitacion)
         db.session.commit()
-        return {"status": 200, "message": "Se eliminó correctamente el usuario con id: "+str(id)}
+        return {"status": 200, "message": "Se eliminó correctamente el usuario con id: "+str(habitacion.id)}
 
     def obtener_habitacion(id):
         habitacionSchema = HabitacionSchema()

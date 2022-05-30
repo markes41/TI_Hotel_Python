@@ -6,8 +6,6 @@ COPY ./app.py /
 
 RUN pip install Flask psycopg2 gunicorn flask_sqlalchemy marshmallow pyjwt
 
-COPY ./scripts/init.sql ./docker-entrypoint-initdb.d
-
 CMD ["gunicorn", "-b", "0.0.0.0:80", "app:app"]
 
 EXPOSE 80
