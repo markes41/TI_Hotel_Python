@@ -24,7 +24,7 @@ CREATE TABLE Roles(
 )
 
 INSERT INTO Roles(Nombre)
-VALUES ('Empleado desde init')
+VALUES ('Empleado')
 
 INSERT INTO Roles(Nombre)
 VALUES ('Cliente')

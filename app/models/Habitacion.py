@@ -1,6 +1,4 @@
-from mkapp import db
-from marshmallow import Schema, fields
-
+from mkapp import db, ma
 class Habitacion( db.Model ):
 
     __tablename__ = 'Habitaciones'
@@ -17,6 +15,7 @@ class Habitacion( db.Model ):
         self.activa = activa
         self.reservada = reservada
 
-class HabitacionSchema(Schema):
-    usuario = fields.Str()
-    edad = fields.Int()
+class HabitacionSchema(ma.SQLAlchemyAutoSchema):
+    class Meta():
+        model = Habitacion
+        load_instance = True

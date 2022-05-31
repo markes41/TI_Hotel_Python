@@ -1,18 +1,19 @@
 from flask import request
 from services.usuarios_service import Usuarios_Service as service
-from helpers.usuarios_helper import Usuarios_Helper as helper
+from models.usuario import UsuarioSchema as schema
 
 class Usuarios_Module:
 
-    base_url = "/Usuarios"
+    base_url = "/usuarios"
 
     def agregar_usuario():
-        usu = helper.request_usuario(request)
+        uSchema = schema()
+        usu = uSchema.load(request.json)
 
         return service.agregar_usuario(usu)
     
     def modificar_usuario(id):
-        usu_nuevo = helper.request_usuario(request)
+        usu_nuevo = schema.load(request.json)
 
         usu_original = service.obtener_usuario(id)
 
