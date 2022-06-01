@@ -1,5 +1,5 @@
 from mkapp import db
-from models.habitacion import Habitacion, HabitacionSchema
+from models.Habitacion import Habitacion, HabitacionSchema
 
 class Habitaciones_Service:
 
@@ -7,29 +7,19 @@ class Habitaciones_Service:
         db.session.add(habitacion)
         db.session.commit()
 
-        return {"status": 200, "message": "Se agregó correctamente la habitación nueva."}
+        return {"status": 200, "message": "Se agregó correctamente la nueva habitación."}
 
     def modificar_habitacion(habitacion):
         db.session.commit()
-        return {"status": 200, "message": "Se modificó correctamente la habitación con id: "+str(habitacion.id)}
+        return {"status": 200, "message": "Habitación modificada correctamente."}
 
     def eliminar_habitacion(habitacion):
         db.session.delete(habitacion)
         db.session.commit()
-        return {"status": 200, "message": "Se eliminó correctamente el usuario con id: "+str(habitacion.id)}
+        return {"status": 200, "message": "Habitación eliminada correctamente."}
 
     def obtener_habitacion(id):
-        habitacionSchema = HabitacionSchema()
-        habitacion = Habitacion.query.get(id)
-        return {"status": 200, "result": habitacionSchema.dumps(habitacion)} 
+        return Habitacion.query.get(id)
 
-    def obtener_habitaciones():
-        habitacionSchema = HabitacionSchema(many=True)
-        habitaciones = Habitacion.query.all()
-        return {"status": 200, "result": habitacionSchema.dumps(habitaciones)}         
-
-
-
-
-
-
+    def obtener_habitaciones():  
+        return Habitacion.query.all()

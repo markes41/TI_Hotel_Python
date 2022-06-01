@@ -15,7 +15,7 @@ def token_required(f):
         try:
             data = jwt.decode(token, app.config["JWT_SECRET"], algorithms=["HS256"])
 
-            usu = service.obtener_usuario(data["id"])["result"]
+            usu = service.obtener_usuario(data["id"])
 
             if usu is None:
                 return { "message": "Token inválido.", "error": "No autorizado"}, 401
@@ -25,3 +25,4 @@ def token_required(f):
         return f(*args, **kwargs)
 
     return decorated
+
