@@ -8,7 +8,7 @@ class Habitacion( db.Model ):
     activa = db.Column(db.Boolean, nullable=False)
     reservada = db.Column(db.Boolean, nullable=False)
 
-    def __init__(self, precio, activa, reservada, fecha_reserva):
+    def __init__(self, precio, activa, reservada):
         self.precio = precio
         self.activa = activa
         self.reservada = reservada
