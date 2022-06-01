@@ -1,6 +1,4 @@
-from mkapp import db
-from marshmallow import Schema, fields
-
+from mkapp import db, ma
 class Usuario( db.Model ):
     
     __tablename__ = 'Usuarios'
@@ -9,7 +7,7 @@ class Usuario( db.Model ):
     usuario = db.Column(db.String(20), unique=True, nullable=False)
     nombre = db.Column(db.String(50), nullable=False)
     clave = db.Column(db.String(50), nullable=False)
-    rol_id = db.Column(db.Integer, db.ForeignKey('Roles.id'))
+    rol = db.Column(db.String(50), nullable=False)
 
     def __init__(self, nombre, clave, usuario, rol):
         self.nombre = nombre
@@ -17,7 +15,8 @@ class Usuario( db.Model ):
         self.usuario = usuario
         self.rol = rol
 
-class UsuarioSchema(Schema):
-    usuario = fields.Str()
-    nombre = fields.Int()
-    rol = fields.Str()
+class UsuarioSchema(ma.SQLAlchemyAutoSchema):
+    class Meta():
+        model = Usuario
+        load_instance = True
+        load_only = ("clave",)

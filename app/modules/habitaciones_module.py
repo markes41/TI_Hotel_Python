@@ -1,19 +1,19 @@
 from flask import request
 from models.habitacion import Habitacion
 from services.habitaciones_service import Habitaciones_Service as service
-from helpers.habitaciones_helper import Habitaciones_Helper as helper
+from models.habitacion import HabitacionSchema as schema
 
 class Habitaciones_Module:
 
-    base_url = "/Habitaciones"
+    base_url = "/habitaciones"
 
     def agregar_habitacion():
-        habitacion = helper.request_habitacion(request)
+        habitacion = schema.load(request.json)
 
         return service.agregar_habitacion(habitacion)
 
     def modificar_habitacion(id):
-        hab_modificada = helper.request_habitacion(request)
+        hab_modificada = schema.load(request.json)
 
         hab_original = Habitacion.query.get(id)
         hab_original.precio = hab_modificada.precio
