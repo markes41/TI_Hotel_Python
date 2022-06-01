@@ -1,6 +1,6 @@
 from flask import request
 from services.habitaciones_service import Habitaciones_Service as service
-from models.habitacion import HabitacionSchema as schema
+from models.Habitacion import HabitacionSchema as schema
 
 class Habitaciones_Module:
 

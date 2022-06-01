@@ -1,5 +1,5 @@
 from mkapp import db
-from models.habitacion import Habitacion, HabitacionSchema
+from models.Habitacion import Habitacion, HabitacionSchema
 
 class Habitaciones_Service:
 

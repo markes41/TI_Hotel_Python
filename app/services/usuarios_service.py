@@ -1,4 +1,4 @@
-from models.usuario import Usuario, UsuarioSchema as schema
+from models.Usuario import Usuario, UsuarioSchema as schema
 from mkapp import db
 
 class Usuarios_Service:

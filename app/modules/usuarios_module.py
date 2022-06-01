@@ -1,6 +1,6 @@
 from flask import request
 from services.usuarios_service import Usuarios_Service as service
-from models.usuario import UsuarioSchema as schema
+from models.Usuario import UsuarioSchema as schema
 
 class Usuarios_Module:
 

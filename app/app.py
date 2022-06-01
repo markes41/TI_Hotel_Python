@@ -1,4 +1,3 @@
-from distutils.log import error
 from decorators.auth.auth_middleware import token_required
 from decorators.error.error_middleware import error_middleware
 from decorators.auth.roles_middleware import roles_middleware
@@ -10,6 +9,7 @@ from mkapp import app, db
 
 # endpoints Login #
 @app.route(Auth.base_url + '/login', methods=['POST'])
+@error_middleware
 def login():
 	auth = Auth()
 	return auth.login()
