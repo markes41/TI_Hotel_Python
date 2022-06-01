@@ -12,10 +12,15 @@ class Usuarios_Module:
 
         return service.agregar_usuario(usu)
     
-    def modificar_usuario(id):
-        usu_nuevo = schema.load(request.json)
-
+    def modificar_usuario(self, id):
         usu_original = service.obtener_usuario(id)
+
+        if usu_original is None:
+            return {"status": 404, "message": "Usuario no encontrado."}
+
+        uSchema = schema()
+        usu_nuevo = uSchema.load(request.json)
+
 
         usu_original.nombre = usu_nuevo.nombre
         usu_original.clave = usu_nuevo.clave
@@ -27,7 +32,17 @@ class Usuarios_Module:
     def eliminar_usuario(id):
         usu = service.obtener_usuario(id)
 
+        if usu is None:
+            return {"status": 404, "message": "Registro no encontrado."}
+        
         return service.eliminar_usuario(usu)
+        
 
     def obtener_usuario(id):
-        return service.obtener_usuario(id)
+        usu = service.obtener_usuario(id)
+        uSchema = schema()
+        
+        if usu is None:
+            return {"status": 404, "message": "Registro no encontrado."}
+        
+        return {"status": 200, "result": uSchema.dump(usu)}
