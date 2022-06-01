@@ -46,3 +46,12 @@ class Usuarios_Module:
             return {"status": 404, "message": "Registro no encontrado."}
         
         return {"status": 200, "result": uSchema.dump(usu)}
+
+    def obtener_usuarios():
+        usu = service.obtener_usuarios()
+        uSchema = schema(many=True)
+        
+        if usu is None:
+            return {"status": 404, "message": "Registro no encontrado."}
+        
+        return {"status": 200, "result": uSchema.dump(usu)}

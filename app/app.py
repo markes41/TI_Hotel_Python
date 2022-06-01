@@ -43,7 +43,7 @@ def eliminar_habitacion(id):
 def obtener_habitacion(id):
 	return Habitaciones.obtener_habitacion(id)
 
-@app.route(Habitaciones.base_url + '/getlistado', methods=['GET'])
+@app.route(Habitaciones.base_url + '/getHabitaciones', methods=['GET'])
 @token_required
 @error_middleware
 def obtener_habitaciones():
@@ -81,6 +81,12 @@ def eliminar_usuario(id):
 @error_middleware
 def obtener_usuario(id):
 	return Usuarios.obtener_usuario(id)
+
+@app.route(Usuarios.base_url + '/getUsuarios', methods=['GET'])
+@token_required
+@error_middleware
+def obtener_usuarios():
+	return Usuarios.obtener_usuarios()
 ######################
 
 @app.route('/init', methods=["POST"])

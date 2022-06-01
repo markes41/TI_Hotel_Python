@@ -26,3 +26,6 @@ class Usuarios_Service:
 
     def obtener_usuario(id):
         return Usuario.query.get(id)
+
+    def obtener_usuarios():
+        return Usuario.query.all()
