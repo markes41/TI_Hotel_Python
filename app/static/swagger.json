@@ -1,0 +1,85 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+      "description": "API simulación de un hotel. Proyecto final del Taller Integrador.",
+      "version": "1.0.0",
+      "title": "Python - API Hotel Flask",
+      "license": {
+        "name": "MIT",
+        "url": "https://opensource.org/licenses/MIT"
+      }
+    },
+    "servers": [
+      {
+          "url": "/"
+      },
+      {
+          "url": "/auth"
+      },
+      {
+          "url": "/habitaciones"
+      },
+      {
+          "url": "/reservas"
+      },
+      {
+          "url": "/usuarios"
+      }
+    ],"tags": [
+        {
+          "name": "API Hotel",
+          "description": ""
+        }
+    ],
+    "paths":{
+        "/auth/login": {
+            "post": {
+              "tags": [
+                "Auth Login"
+              ],
+              "summary": "Logea un usuario en el sistema.",
+              "requestBody": {
+                "description": "",
+                "required": true,
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "properties":{
+                          "usuario": {
+                              "type": "string"
+                          },
+                          "clave":{
+                              "type": "string"
+                          }
+                      }
+                    }
+                  }
+                }
+              },
+              "produces": [
+                "application/json"
+              ],
+              "responses": {
+                "201": {
+                  "description": "Se generó el token.",
+                  "schema": {
+                    "type": "object",
+                      "properties":{
+                          "status": {
+                              "type": "integer"
+                          },
+                          "token":{
+                              "type": "string"
+                          }
+                      }
+                  }
+                },
+                "404": {
+                  "description": "Credenciales inválidas."
+                }
+              }
+            }
+          }
+    }
+}

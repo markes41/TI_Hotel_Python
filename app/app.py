@@ -1,103 +1,38 @@
-from decorators.auth.auth_middleware import token_required
-from decorators.error.error_middleware import error_middleware
-from decorators.auth.roles_middleware import roles_middleware
-from modules.authentication_module import AuthModule as Auth
-from modules.habitaciones_module import Habitaciones_Module as Habitaciones
-from modules.usuarios_module import Usuarios_Module as Usuarios
+from flask_swagger_ui import get_swaggerui_blueprint
 from mkapp import app, db
+from routes import auth_route, habitaciones_route, usuarios_route, reservas_route
+from decorators.error import error_middleware
 
+### Especificaciones swagger documentación API###
+SWAGGER_URL = '/api/docs'
+API_URL = '/static/swagger.json'
+SWAGGERUI_BLUEPRINT = get_swaggerui_blueprint(
+    SWAGGER_URL,
+    API_URL,
+    config={
+        'app_name': "Python - API Hotel Flask"
+    }
+)
+app.register_blueprint(SWAGGERUI_BLUEPRINT, url_prefix=SWAGGER_URL)
+##################################################
 
-# endpoints Login #
-@app.route(Auth.base_url + '/login', methods=['POST'])
-@error_middleware
-def login():
-	auth = Auth()
-	return auth.login()
-###################
+####### ROUTES ENDPOINTS #######
 
-# endpoints Habitaciones #
-@app.route(Habitaciones.base_url + '/agregar', methods=['POST'])
-@token_required
-@error_middleware
-@roles_middleware("Empleado")
-def agregar_habitacion():
-	return Habitaciones.agregar_habitacion()
+# Authorization
+app.register_blueprint(auth_route.get_blueprint())
 
-@app.route(Habitaciones.base_url + '/modificar/<int:id>', methods=['PUT'])
-@token_required
-@error_middleware
-@roles_middleware("Empleado")
-def modificar_habitacion(id):
-	return Habitaciones.modificar_habitacion(id)
+# Habitaciones
+app.register_blueprint(habitaciones_route.get_blueprint())
 
-@app.route(Habitaciones.base_url + '/eliminar/<int:id>', methods=['DELETE'])
-@token_required
-@error_middleware
-@roles_middleware("Empleado")
-def eliminar_habitacion(id):
-	return Habitaciones.eliminar_habitacion(id)
+# Usuarios
+app.register_blueprint(usuarios_route.get_blueprint())
 
-@app.route(Habitaciones.base_url + '/get/<int:id>', methods=['GET'])
-@token_required
-@error_middleware
-def obtener_habitacion(id):
-	return Habitaciones.obtener_habitacion(id)
+# Reservas
+app.register_blueprint(reservas_route.get_blueprint())
 
-@app.route(Habitaciones.base_url + '/getHabitaciones', methods=['GET'])
-@token_required
-@error_middleware
-def obtener_habitaciones():
-	return Habitaciones.obtener_habitaciones()
+###############################
 
-@app.route(Habitaciones.base_url + '/deshabilitar/<int:id>', methods=['GET'])
-@token_required
-@error_middleware
-@roles_middleware("Empleado")
-def deshabilitar_habitacion(id):
-	return Habitaciones.deshabilitar_habitacion(id)
-########################
-
-# endpoints Usuarios #
-@app.route(Usuarios.base_url + '/agregar', methods=['POST'])
-@error_middleware
-def agregar_usuario():
-	return Usuarios.agregar_usuario()
-
-@app.route(Usuarios.base_url + '/modificar/<int:id>', methods=['PUT'])
-@token_required
-@error_middleware
-def modificar_usuario(id):
-	usu = Usuarios()
-	return usu.modificar_usuario(id)
-
-@app.route(Usuarios.base_url + '/eliminar/<int:id>', methods=['DELETE'])
-@token_required
-@error_middleware
-def eliminar_usuario(id):
-	return Usuarios.eliminar_usuario(id)
-
-@app.route(Usuarios.base_url + '/get/<int:id>', methods=['GET'])
-@token_required
-@error_middleware
-def obtener_usuario(id):
-	return Usuarios.obtener_usuario(id)
-
-@app.route(Usuarios.base_url + '/getUsuarios', methods=['GET'])
-@token_required
-@error_middleware
-def obtener_usuarios():
-	return Usuarios.obtener_usuarios()
-######################
-
-@app.route('/init', methods=["POST"])
-@error_middleware
-def crear_tablas():
-	db.create_all()
-	return {"message": "Se crearon las tablas correctamente."}
-
-# Crear tablas
 db.create_all()
-##############
 
 if __name__ == '__main__':
     app.run()
