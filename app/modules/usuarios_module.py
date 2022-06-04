@@ -12,7 +12,7 @@ class Usuarios_Module:
 
         return service.agregar_usuario(usu)
     
-    def modificar_usuario(self, id):
+    def modificar_usuario(id):
         usu_original = service.obtener_usuario(id)
 
         if usu_original is None:

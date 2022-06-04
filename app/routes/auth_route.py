@@ -1,5 +1,5 @@
 from flask import Blueprint
-from modules.usuarios_module import Usuarios_Module  as Usuarios
+from modules.authentication_module import AuthModule as Auth
 from decorators.error.error_middleware import error_middleware
 
 auth_route = Blueprint('auth_route', __name__)
