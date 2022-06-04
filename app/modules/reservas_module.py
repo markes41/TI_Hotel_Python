@@ -9,8 +9,8 @@ class Reservas_Module:
 
     base_url = "/reservas"
 
-    def obtener_habitaciones_reservadas():
-        habitaciones = service.obtener_habitaciones_reservadas()
+    def obtener_habitaciones_reservadas(id):
+        habitaciones = service.obtener_habitaciones_reservadas(id)
 
         if len(habitaciones) == 0:
             return {"status": 200, "message": "No hay habitaciones reservadas."}
@@ -19,16 +19,26 @@ class Reservas_Module:
         
         return {"status": 200, "result": sHabitaciones.dump(habitaciones)}
 
-    def reservar_habitacion(id, cantidad_dias):
-        habitacion = habitaciones_service.obtener_habitacion(id)
+    def reservar_habitacion():
+        
+        id_habitacion = request.json["id_habitacion"]
+
+        habitacion = habitaciones_service.obtener_habitacion(id_habitacion)
 
         if habitacion is None:
             return {"status": 404, "message": "Registro no encontrado."}, 404
 
+        if habitacion.activa == False:
+            return {"status": 200, "message": f"La habitación N°: {habitacion.id} se encuentra deshabilitada para ser reservada. Intente con otra."}, 200 
+
         if habitacion.reservada == True:
             return {"status": 200, "message": f"La habitación N°: {habitacion.id} ya se encuentra reservada."}, 200
         
-        reserva = Reserva(habitacion.id, datetime.today().strftime('%Y-%m-%d'), cantidad_dias)
+        
+        fecha_desde = request.json["fecha_desde"]
+        fecha_hasta = request.json["fecha_hasta"]
+
+        reserva = Reserva(habitacion.id, fecha_desde, fecha_hasta)
 
         result = service.agregar_reserva(reserva)
 
@@ -38,20 +48,21 @@ class Reservas_Module:
 
         return {"status": 200, "message": f"Se reservó la habitación N°: {habitacion.id} correctamente."}, 200
 
-    def obtener_reservas_by_dia():
-        fecha = request.json["fecha"]
+    def obtener_reservas_by_fecha(fecha_str):
+        fecha = datetime.strptime(fecha_str, '%Y-%m-%d')
 
         reservas = service.obtener_reservas_by_fecha(fecha)
 
         if len(reservas) == 0:
             return {"status": 404, "message": "No se encontraron registros."}, 404
 
-        reservas_transformado = []
+        habitaciones_transformado = []
+
         for reserva in reservas:
-            reservas_transformado.append({"num_habitacion": reserva.habitacion.id, "fecha_reserva": reserva.fecha_reserva,
+            habitaciones_transformado.append({"num_habitacion": reserva.habitacion.id, "fecha_reserva": reserva.fecha_desde,
             "disponibilidad": "Disponible" if reserva.habitacion.reservada == False else "Ocupada"})
 
-        return {"status": 200, "result": reservas_transformado}
+        return {"status": 200, "result": habitaciones_transformado}
 
         
 

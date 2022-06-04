@@ -71,7 +71,7 @@
           },
           "/usuarios/agregar":{
             "post": {
-              "summary": "Agregar un nuevo usuario.",
+              "summary": "Agrega un nuevo usuario.",
               "tags": [
                 "Usuario Request"
               ],
@@ -124,7 +124,7 @@
           },
           "/usuarios/modificar/{id}":{
             "put": {
-              "summary": "Editar un usuario por su ID.",
+              "summary": "Modifica un usuario por su ID.",
               "tags": [
                 "Usuario Request"
               ],
@@ -233,7 +233,7 @@
           },
           "/usuarios/eliminar/{id}":{
             "delete": {
-              "summary": "Eliminar un usuario por su ID.",
+              "summary": "Elimina un usuario por su ID.",
               "tags": [
                 "Usuario Request"
               ],
@@ -283,7 +283,7 @@
           },
           "/habitaciones/agregar":{
             "post": {
-              "summary": "Agregar una nueva habitación.",
+              "summary": "Agrega una nueva habitación.",
               "tags": [
                 "Habitaciones Request"
               ],
@@ -336,7 +336,7 @@
           },
           "/habitaciones/modificar/{id}":{
             "put": {
-              "summary": "Modificar una habitación.",
+              "summary": "Modifica una habitación.",
               "tags": [
                 "Habitaciones Request"
               ],
@@ -443,9 +443,57 @@
               ]
             }
           },
+          "/habitaciones/deshabilitar/{id}": {
+            "parameters": [
+              {
+                "name": "id",
+                "in": "path",
+                "required": true,
+                "description": "Id de la habitación que desea deshabilitar.",
+                "type": "integer"
+              }
+            ],
+            "get": {
+              "tags": [
+                "Habitaciones Request"
+              ],
+              "summary": "Deshabilita una habitación con el ID proporcionado.",
+              "responses": {
+                "201": {
+                  "description": "OK",
+                  "schema": {
+                    "$ref": "#/components/schemas/responseSchemaOk"
+                  }
+                },
+                "400": {
+                  "description": "BAD",
+                  "schema": {
+                    "$ref": "#/components/schemas/responseSchemaBad"
+                  }
+                },
+                "404": {
+                  "description": "BAD",
+                  "schema": {
+                    "$ref": "#/components/schemas/responseSchemaBad"
+                  }
+                },
+                "500": {
+                  "description": "BAD",
+                  "schema": {
+                    "$ref": "#/components/schemas/responseSchemaBad"
+                  }
+                }
+              },
+              "security": [
+                {
+                  "bearerAuth": []
+                }
+              ]
+            }
+          },
           "/habitaciones/eliminar/{id}":{
             "delete": {
-              "summary": "Eliminar un usuario por su ID.",
+              "summary": "Elimina un usuario por su ID.",
               "tags": [
                 "Habitaciones Request"
               ],
@@ -493,26 +541,23 @@
               ]
             }
           },
-          "/reservas/reservarHabitacion/{id}/{cantidad_dias}":{
+          "/reservas/reservarHabitacion":{
             "post": {
               "summary": "Reservar una habitación.",
               "tags": [
                 "Reservas Request"
               ],
-              "parameters": [
-                {
-                  "in": "path",
-                  "name": "id",
-                  "required": true,
-                  "description": "Id de la habitación "
-                },
-                {
-                  "in": "path",
-                  "name": "cantidad_dias",
-                  "required": true,
-                  "description": "Cantidad días de reserva"
+              "requestBody": {
+                "description": "Reserva Request Object",
+                "required": true,
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/reservaSchema"
+                    }
+                  }
                 }
-              ],
+              },
               "produces": [
                 "application/json"
               ],
@@ -549,12 +594,67 @@
               ]
             }
           },
-          "/reservas/getReservas": {
+          "/reservas/getReservas/{id}": {
             "get": {
               "tags": [
                 "Reservas Request"
               ],
+              "parameters": [
+                {
+                  "in": "path",
+                  "name": "id",
+                  "required": true,
+                  "description": "Habitacion request Id"
+                }
+              ],
               "summary": "Obtiene un listado con las reservas a existentes.",
+              "responses": {
+                "201": {
+                  "description": "OK",
+                  "schema": {
+                    "$ref": "#/components/schemas/responseSchemaOk"
+                  }
+                },
+                "400": {
+                  "description": "BAD",
+                  "schema": {
+                    "$ref": "#/components/schemas/responseSchemaBad"
+                  }
+                },
+                "404": {
+                  "description": "BAD",
+                  "schema": {
+                    "$ref": "#/components/schemas/responseSchemaBad"
+                  }
+                },
+                "500": {
+                  "description": "BAD",
+                  "schema": {
+                    "$ref": "#/components/schemas/responseSchemaBad"
+                  }
+                }
+              },
+              "security": [
+                {
+                  "bearerAuth": []
+                }
+              ]
+            }
+          },
+          "/reservas/getHabitacionesByFecha/{fecha}": {
+            "get": {
+              "tags": [
+                "Reservas Request"
+              ],
+              "parameters": [
+                {
+                  "in": "path",
+                  "name": "fecha",
+                  "required": true,
+                  "description": "Reserva request Fecha"
+                }
+              ],
+              "summary": "Obtiene un listado con las reservas a existentes entre la fecha proporcionada.",
               "responses": {
                 "201": {
                   "description": "OK",
@@ -598,27 +698,6 @@
         }
       },
       "schemas":{
-        "usuarioRequest": {
-          "type": "object",
-          "properties": {
-            "usuario": {
-              "type": "string",
-              "format": "string"
-            },
-            "nombre": {
-              "type": "string",
-              "format": "string"
-            },
-            "clave": {
-              "type": "string",
-              "format": "string"
-            },
-            "rol": {
-              "type": "string",
-              "format": "string"
-            }
-          }
-        },
         "responseSchemaOk":{
           "type": "object",
           "properties": {
@@ -649,6 +728,27 @@
             }
           }
         },
+        "usuarioRequest": {
+          "type": "object",
+          "properties": {
+            "usuario": {
+              "type": "string",
+              "format": "string"
+            },
+            "nombre": {
+              "type": "string",
+              "format": "string"
+            },
+            "clave": {
+              "type": "string",
+              "format": "string"
+            },
+            "rol": {
+              "type": "string",
+              "format": "string"
+            }
+          }
+        },
         "habitacionSchema":{
           "type": "object",
           "properties": {
@@ -673,13 +773,13 @@
               "type": "number",
               "format": "number"
             },
-            "fecha_reserva":{
+            "fecha_desde":{
               "tpye": "string",
               "format": "string"
             },
-            "cantidad_dias":{
-              "tpye": "number",
-              "format": "number"
+            "fecha_hasta":{
+              "tpye": "string",
+              "format": "string"
             }
           }
         }

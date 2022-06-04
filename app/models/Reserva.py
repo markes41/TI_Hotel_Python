@@ -8,13 +8,13 @@ class Reserva( db.Model ):
     id = db.Column(db.Integer, primary_key=True)
     id_habitacion = db.Column(db.Integer, db.ForeignKey('Habitaciones.id'))
     habitacion = db.relationship("Habitacion", backref="Reserva")
-    fecha_reserva = db.Column(db.DateTime, nullable=True)
-    cantidad_dias = db.Column(db.Integer, nullable=False)
+    fecha_desde = db.Column(db.DateTime, nullable=True)
+    fecha_hasta = db.Column(db.DateTime, nullable=True)
 
-    def __init__(self, id_habitacion, fecha_reserva, cantidad_dias):
+    def __init__(self, id_habitacion, fecha_desde, fecha_hasta):
         self.id_habitacion = id_habitacion
-        self.fecha_reserva = fecha_reserva
-        self.cantidad_dias = cantidad_dias
+        self.fecha_desde = fecha_desde
+        self.fecha_hasta = fecha_hasta
 
 class ReservaSchema(ma.SQLAlchemyAutoSchema):
     class Meta():

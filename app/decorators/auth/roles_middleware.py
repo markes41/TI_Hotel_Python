@@ -15,7 +15,7 @@ def roles_middleware(rol):
 
                 data = jwt.decode(token, app.config["JWT_SECRET"], algorithms=["HS256"])
 
-                if data["rol"] != rol:
+                if data["rol"] != rol and data["rol"] != "Administrador":
                     return { "message": "Módulo sólo habilitado para " + str(rol) + "s."}, 401
 
                 return func(*args, **kwargs)

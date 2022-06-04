@@ -1,4 +1,6 @@
+from distutils.log import error
 import imp
+from lib2to3.pgen2 import token
 from flask import Blueprint
 from modules.reservas_module import Reservas_Module  as Reservas
 from decorators.error.error_middleware import error_middleware
@@ -11,20 +13,23 @@ def get_blueprint():
     """"Retorna el blueprint para la app principal"""
     return reservas_route
 
-@reservas_route.route(Reservas.base_url + '/getReservas', methods=['GET'])
+@reservas_route.route(Reservas.base_url + '/getReservas/<int:id>', methods=['GET'])
 @token_required
 @error_middleware
 @roles_middleware("Empleado")
-def obtener_reservas():
-	return Reservas.obtener_habitaciones_reservadas()
+def obtener_reservas(id):
+	return Reservas.obtener_habitaciones_reservadas(id)
 
-@reservas_route.route(Reservas.base_url + '/reservarHabitacion/<int:id>/<int:cantidad_dias>', methods=['POST'])
+@reservas_route.route(Reservas.base_url + '/reservarHabitacion', methods=['POST'])
 @token_required
 @error_middleware
 @roles_middleware("Cliente")
-def reservar_habitacion(id, cantidad_dias):
-	return Reservas.reservar_habitacion(id, cantidad_dias)
+def reservar_habitacion():
+	return Reservas.reservar_habitacion()
 
-@reservas_route.route(Reservas.base_url + '/obtenerHabitacionesByDia', methods=['GET'])
-def obtener_habitacion_by_dia():
-	return Reservas.obtener_reservas_by_dia()
+@reservas_route.route(Reservas.base_url + '/getHabitacionesByFecha/<fecha>', methods=['GET'])
+@error_middleware
+@token_required
+@roles_middleware("Cliente")
+def obtener_habitacion_by_dia(fecha):
+	return Reservas.obtener_reservas_by_fecha(fecha)
