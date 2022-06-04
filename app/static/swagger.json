@@ -12,18 +12,6 @@
     "servers": [
       {
           "url": "/"
-      },
-      {
-          "url": "/auth"
-      },
-      {
-          "url": "/habitaciones"
-      },
-      {
-          "url": "/reservas"
-      },
-      {
-          "url": "/usuarios"
       }
     ],"tags": [
         {
