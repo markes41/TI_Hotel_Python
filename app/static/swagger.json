@@ -1,0 +1,704 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+      "description": "API simulación de un hotel. Proyecto final del Taller Integrador.",
+      "version": "1.0.0",
+      "title": "Python - API Hotel Flask",
+      "license": {
+        "name": "MIT",
+        "url": "https://opensource.org/licenses/MIT"
+      }
+    },
+    "servers": [
+      {
+          "url": "/"
+      },
+      {
+          "url": "/auth"
+      },
+      {
+          "url": "/habitaciones"
+      },
+      {
+          "url": "/reservas"
+      },
+      {
+          "url": "/usuarios"
+      }
+    ],"tags": [
+        {
+          "name": "API Hotel",
+          "description": ""
+        }
+    ],
+    "paths":{
+        "/auth/login": {
+            "post": {
+              "tags": [
+                "Auth Login"
+              ],
+              "summary": "Logea un usuario en el sistema.",
+              "requestBody": {
+                "description": "",
+                "required": true,
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "properties":{
+                          "usuario": {
+                              "type": "string"
+                          },
+                          "clave":{
+                              "type": "string"
+                          }
+                      }
+                    }
+                  }
+                }
+              },
+              "produces": [
+                "application/json"
+              ],
+              "responses": {
+                "201": {
+                  "description": "Se generó el token.",
+                  "schema": {
+                    "type": "object",
+                      "properties":{
+                          "status": {
+                              "type": "integer"
+                          },
+                          "token":{
+                              "type": "string"
+                          }
+                      }
+                  }
+                },
+                "404": {
+                  "description": "Credenciales inválidas."
+                }
+              }
+            }
+          },
+          "/usuarios/agregar":{
+            "post": {
+              "summary": "Agregar un nuevo usuario.",
+              "tags": [
+                "Usuario Request"
+              ],
+              "requestBody": {
+                "description": "Usuario Request Object",
+                "required": true,
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/usuarioRequest"
+                    }
+                  }
+                }
+              },
+              "produces": [
+                "application/json"
+              ],
+              "responses": {
+                "200": {
+                  "description": "OK",
+                  "schema": {
+                    "$ref": "#/components/schemas/responseSchemaOk"
+                  }
+                },
+                "400": {
+                  "description": "BAD",
+                  "schema": {
+                    "$ref": "#/components/schemas/responseSchemaBad"
+                  }
+                },
+                "404": {
+                  "description": "BAD",
+                  "schema": {
+                    "$ref": "#/components/schemas/responseSchemaBad"
+                  }
+                },
+                "500": {
+                  "description": "BAD",
+                  "schema": {
+                    "$ref": "#/components/schemas/responseSchemaBad"
+                  }
+                }
+              },
+              "security": [
+                {
+                  "bearerAuth": []
+                }
+              ]
+            }
+          },
+          "/usuarios/modificar/{id}":{
+            "put": {
+              "summary": "Editar un usuario por su ID.",
+              "tags": [
+                "Usuario Request"
+              ],
+              "parameters": [
+                {
+                  "in": "path",
+                  "name": "id",
+                  "required": true,
+                  "description": "Usuario request Id"
+                }
+              ],
+              "requestBody": {
+                "description": "Usuario request object",
+                "required": true,
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/usuarioRequest"
+                    }
+                  }
+                }
+              },
+              "produces": [
+                "application/json"
+              ],
+              "responses": {
+                "200": {
+                  "description": "OK",
+                  "schema": {
+                    "$ref": "#/components/schemas/responseSchemaOk"
+                  }
+                },
+                "400": {
+                  "description": "BAD",
+                  "schema": {
+                    "$ref": "#/components/schemas/responseSchemaBad"
+                  }
+                },
+                "404": {
+                  "description": "BAD",
+                  "schema": {
+                    "$ref": "#/components/schemas/responseSchemaBad"
+                  }
+                },
+                "500": {
+                  "description": "BAD",
+                  "schema": {
+                    "$ref": "#/components/schemas/responseSchemaBad"
+                  }
+                }
+              },
+              "security": [
+                {
+                  "bearerAuth": []
+                }
+              ]
+            }
+          },
+          "/usuarios/get/{id}": {
+            "parameters": [
+              {
+                "name": "id",
+                "in": "path",
+                "required": true,
+                "description": "Id del usuario que desea obtener.",
+                "type": "integer"
+              }
+            ],
+            "get": {
+              "tags": [
+                "Usuario Request"
+              ],
+              "summary": "Obtiene un usuario con el ID proporcionado.",
+              "responses": {
+                "201": {
+                  "description": "OK",
+                  "schema": {
+                    "$ref": "#/components/schemas/responseSchemaOk"
+                  }
+                },
+                "400": {
+                  "description": "BAD",
+                  "schema": {
+                    "$ref": "#/components/schemas/responseSchemaBad"
+                  }
+                },
+                "404": {
+                  "description": "BAD",
+                  "schema": {
+                    "$ref": "#/components/schemas/responseSchemaBad"
+                  }
+                },
+                "500": {
+                  "description": "BAD",
+                  "schema": {
+                    "$ref": "#/components/schemas/responseSchemaBad"
+                  }
+                }
+              },
+              "security": [
+                {
+                  "bearerAuth": []
+                }
+              ]
+            }
+          },
+          "/usuarios/eliminar/{id}":{
+            "delete": {
+              "summary": "Eliminar un usuario por su ID.",
+              "tags": [
+                "Usuario Request"
+              ],
+              "parameters": [
+                {
+                  "in": "path",
+                  "name": "id",
+                  "required": true,
+                  "description": "Usuario request Id"
+                }
+              ],
+              "produces": [
+                "application/json"
+              ],
+              "responses": {
+                "200": {
+                  "description": "OK",
+                  "schema": {
+                    "$ref": "#/components/schemas/responseSchemaOk"
+                  }
+                },
+                "400": {
+                  "description": "BAD",
+                  "schema": {
+                    "$ref": "#/components/schemas/responseSchemaBad"
+                  }
+                },
+                "404": {
+                  "description": "BAD",
+                  "schema": {
+                    "$ref": "#/components/schemas/responseSchemaBad"
+                  }
+                },
+                "500": {
+                  "description": "BAD",
+                  "schema": {
+                    "$ref": "#/components/schemas/responseSchemaBad"
+                  }
+                }
+              },
+              "security": [
+                {
+                  "bearerAuth": []
+                }
+              ]
+            }
+          },
+          "/habitaciones/agregar":{
+            "post": {
+              "summary": "Agregar una nueva habitación.",
+              "tags": [
+                "Habitaciones Request"
+              ],
+              "produces": [
+                "application/json"
+              ],
+              "requestBody": {
+                "description": "Habitacion Request Object",
+                "required": true,
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/habitacionSchema"
+                    }
+                  }
+                }
+              },
+              "responses": {
+                "200": {
+                  "description": "OK",
+                  "schema": {
+                    "$ref": "#/components/schemas/responseSchemaOk"
+                  }
+                },
+                "400": {
+                  "description": "BAD",
+                  "schema": {
+                    "$ref": "#/components/schemas/responseSchemaBad"
+                  }
+                },
+                "404": {
+                  "description": "BAD",
+                  "schema": {
+                    "$ref": "#/components/schemas/responseSchemaBad"
+                  }
+                },
+                "500": {
+                  "description": "BAD",
+                  "schema": {
+                    "$ref": "#/components/schemas/responseSchemaBad"
+                  }
+                }
+              },
+              "security": [
+                {
+                  "bearerAuth": []
+                }
+              ]
+            }
+          },
+          "/habitaciones/modificar/{id}":{
+            "put": {
+              "summary": "Modificar una habitación.",
+              "tags": [
+                "Habitaciones Request"
+              ],
+              "parameters": [
+                {
+                  "in": "path",
+                  "name": "id",
+                  "required": true,
+                  "description": "Usuario request Id"
+                }
+              ],
+              "produces": [
+                "application/json"
+              ],
+              "requestBody": {
+                "description": "Habitacion Request Object",
+                "required": true,
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/habitacionSchema"
+                    }
+                  }
+                }
+              },
+              "responses": {
+                "200": {
+                  "description": "OK",
+                  "schema": {
+                    "$ref": "#/components/schemas/responseSchemaOk"
+                  }
+                },
+                "400": {
+                  "description": "BAD",
+                  "schema": {
+                    "$ref": "#/components/schemas/responseSchemaBad"
+                  }
+                },
+                "404": {
+                  "description": "BAD",
+                  "schema": {
+                    "$ref": "#/components/schemas/responseSchemaBad"
+                  }
+                },
+                "500": {
+                  "description": "BAD",
+                  "schema": {
+                    "$ref": "#/components/schemas/responseSchemaBad"
+                  }
+                }
+              },
+              "security": [
+                {
+                  "bearerAuth": []
+                }
+              ]
+            }
+          },
+          "/habitaciones/get/{id}": {
+            "parameters": [
+              {
+                "name": "id",
+                "in": "path",
+                "required": true,
+                "description": "Id de la habitación que desea obtener.",
+                "type": "integer"
+              }
+            ],
+            "get": {
+              "tags": [
+                "Habitaciones Request"
+              ],
+              "summary": "Obtiene una habitación con el ID proporcionado.",
+              "responses": {
+                "201": {
+                  "description": "OK",
+                  "schema": {
+                    "$ref": "#/components/schemas/responseSchemaOk"
+                  }
+                },
+                "400": {
+                  "description": "BAD",
+                  "schema": {
+                    "$ref": "#/components/schemas/responseSchemaBad"
+                  }
+                },
+                "404": {
+                  "description": "BAD",
+                  "schema": {
+                    "$ref": "#/components/schemas/responseSchemaBad"
+                  }
+                },
+                "500": {
+                  "description": "BAD",
+                  "schema": {
+                    "$ref": "#/components/schemas/responseSchemaBad"
+                  }
+                }
+              },
+              "security": [
+                {
+                  "bearerAuth": []
+                }
+              ]
+            }
+          },
+          "/habitaciones/eliminar/{id}":{
+            "delete": {
+              "summary": "Eliminar un usuario por su ID.",
+              "tags": [
+                "Habitaciones Request"
+              ],
+              "parameters": [
+                {
+                  "in": "path",
+                  "name": "id",
+                  "required": true,
+                  "description": "Habitacion request Id"
+                }
+              ],
+              "produces": [
+                "application/json"
+              ],
+              "responses": {
+                "200": {
+                  "description": "OK",
+                  "schema": {
+                    "$ref": "#/components/schemas/responseSchemaOk"
+                  }
+                },
+                "400": {
+                  "description": "BAD",
+                  "schema": {
+                    "$ref": "#/components/schemas/responseSchemaBad"
+                  }
+                },
+                "404": {
+                  "description": "BAD",
+                  "schema": {
+                    "$ref": "#/components/schemas/responseSchemaBad"
+                  }
+                },
+                "500": {
+                  "description": "BAD",
+                  "schema": {
+                    "$ref": "#/components/schemas/responseSchemaBad"
+                  }
+                }
+              },
+              "security": [
+                {
+                  "bearerAuth": []
+                }
+              ]
+            }
+          },
+          "/reservas/reservarHabitacion/{id}/{cantidad_dias}":{
+            "post": {
+              "summary": "Reservar una habitación.",
+              "tags": [
+                "Reservas Request"
+              ],
+              "parameters": [
+                {
+                  "in": "path",
+                  "name": "id",
+                  "required": true,
+                  "description": "Id de la habitación "
+                },
+                {
+                  "in": "path",
+                  "name": "cantidad_dias",
+                  "required": true,
+                  "description": "Cantidad días de reserva"
+                }
+              ],
+              "produces": [
+                "application/json"
+              ],
+              "responses": {
+                "200": {
+                  "description": "OK",
+                  "schema": {
+                    "$ref": "#/components/schemas/responseSchemaOk"
+                  }
+                },
+                "400": {
+                  "description": "BAD",
+                  "schema": {
+                    "$ref": "#/components/schemas/responseSchemaBad"
+                  }
+                },
+                "404": {
+                  "description": "BAD",
+                  "schema": {
+                    "$ref": "#/components/schemas/responseSchemaBad"
+                  }
+                },
+                "500": {
+                  "description": "BAD",
+                  "schema": {
+                    "$ref": "#/components/schemas/responseSchemaBad"
+                  }
+                }
+              },
+              "security": [
+                {
+                  "bearerAuth": []
+                }
+              ]
+            }
+          },
+          "/reservas/getReservas": {
+            "get": {
+              "tags": [
+                "Reservas Request"
+              ],
+              "summary": "Obtiene un listado con las reservas a existentes.",
+              "responses": {
+                "201": {
+                  "description": "OK",
+                  "schema": {
+                    "$ref": "#/components/schemas/responseSchemaOk"
+                  }
+                },
+                "400": {
+                  "description": "BAD",
+                  "schema": {
+                    "$ref": "#/components/schemas/responseSchemaBad"
+                  }
+                },
+                "404": {
+                  "description": "BAD",
+                  "schema": {
+                    "$ref": "#/components/schemas/responseSchemaBad"
+                  }
+                },
+                "500": {
+                  "description": "BAD",
+                  "schema": {
+                    "$ref": "#/components/schemas/responseSchemaBad"
+                  }
+                }
+              },
+              "security": [
+                {
+                  "bearerAuth": []
+                }
+              ]
+            }
+          }
+    },
+    "components": {
+      "securitySchemes":{
+        "bearerAuth":{
+          "type": "http",
+          "scheme": "bearer",
+          "bearerFormat": "JWT"
+        }
+      },
+      "schemas":{
+        "usuarioRequest": {
+          "type": "object",
+          "properties": {
+            "usuario": {
+              "type": "string",
+              "format": "string"
+            },
+            "nombre": {
+              "type": "string",
+              "format": "string"
+            },
+            "clave": {
+              "type": "string",
+              "format": "string"
+            },
+            "rol": {
+              "type": "string",
+              "format": "string"
+            }
+          }
+        },
+        "responseSchemaOk":{
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "number",
+              "format": "number"
+            },
+            "message":{
+              "tpye": "string",
+              "format": "string"
+            }
+          }
+        },
+        "responseSchemaBad":{
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "number",
+              "format": "number"
+            },
+            "message":{
+              "tpye": "string",
+              "format": "string"
+            },
+            "error":{
+              "tpye": "string",
+              "format": "string"
+            }
+          }
+        },
+        "habitacionSchema":{
+          "type": "object",
+          "properties": {
+            "precio": {
+              "type": "number",
+              "format": "number"
+            },
+            "activa":{
+              "tpye": "boolean",
+              "format": "boolean"
+            },
+            "reservada":{
+              "tpye": "boolean",
+              "format": "boolean"
+            }
+          }
+        },
+        "reservaSchema":{
+          "type": "object",
+          "properties": {
+            "id_habitacion": {
+              "type": "number",
+              "format": "number"
+            },
+            "fecha_reserva":{
+              "tpye": "string",
+              "format": "string"
+            },
+            "cantidad_dias":{
+              "tpye": "number",
+              "format": "number"
+            }
+          }
+        }
+      }
+    },
+    "security":{
+      "bearerAuth": []
+    }
+
+}

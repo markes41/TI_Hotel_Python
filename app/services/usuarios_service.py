@@ -1,4 +1,4 @@
-from models.Usuario import Usuario, UsuarioSchema as schema
+from models.usuario import Usuario, UsuarioSchema as schema
 from mkapp import db
 
 class Usuarios_Service:
@@ -13,16 +13,19 @@ class Usuarios_Service:
         db.session.add(usuario)
         db.session.commit()
 
-        return {"status": 200, "message": "Se agregó correctamente el usuario."}
+        return {"status": 200, "message": "Se agregó correctamente el usuario."}, 200
 
     def modificar_usuario(usuario):
         db.session.commit()
-        return {"status": 200, "message": "Usuario modificado correctamente."}
+        return {"status": 200, "message": "Usuario modificado correctamente."}, 200
 
     def eliminar_usuario(usuario):
         db.session.delete(usuario)
         db.session.commit()
-        return {"status": 200, "message": "Usuario eliminado correctamente."}
+        return {"status": 200, "message": "Usuario eliminado correctamente."}, 200
 
     def obtener_usuario(id):
         return Usuario.query.get(id)
+
+    def obtener_usuarios():
+        return Usuario.query.all()

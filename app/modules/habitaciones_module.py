@@ -1,6 +1,6 @@
 from flask import request
 from services.habitaciones_service import Habitaciones_Service as service
-from models.Habitacion import HabitacionSchema as schema
+from models.habitacion import HabitacionSchema as schema
 
 class Habitaciones_Module:
 
@@ -19,11 +19,8 @@ class Habitaciones_Module:
             return {"status": 404, "message": "Registro no encontrado."}
 
         sHabitacion = schema()
-        hab_modificada = sHabitacion.load(request.json)
 
-        hab_original.precio = hab_modificada.precio
-        hab_original.reservada = hab_modificada.reservada
-        hab_original.activa = hab_modificada.activa
+        hab_original.precio = request.json["precio"]
 
         return service.modificar_habitacion(hab_original)
 
@@ -31,15 +28,15 @@ class Habitaciones_Module:
         habitacion = service.obtener_habitacion(id)
 
         if habitacion is None:
-            return {"status": 404, "message": "Registro no encontrado."}
+            return {"status": 404, "message": "Registro no encontrado."}, 404
 
         return service.eliminar_habitacion(habitacion)
 
     def obtener_habitaciones():
-        habitaciones = service.obtener_habitaciones()
+        habitaciones = service.obtener_habitaciones_reservadas()
 
-        if habitaciones is None:
-            return {"status": 404, "message": "Registro no encontrado."}
+        if len(habitaciones) == 0:
+            return {"status": 404, "message": "No hay habitaciones disponibles."}, 404
 
         habitacionSchema = schema(many=True)
         return {"status": 200, "result": habitacionSchema.dump(habitaciones)}
@@ -48,7 +45,7 @@ class Habitaciones_Module:
         habitacion = service.obtener_habitacion(id)
 
         if habitacion is None:
-            return {"status": 404, "message": "Registro no encontrado."}
+            return {"status": 404, "message": "Registro no encontrado."}, 404
 
         habitacionSchema = schema()
         return {"status": 200, "result": habitacionSchema.dump(habitacion)}
@@ -57,7 +54,7 @@ class Habitaciones_Module:
         habitacion = service.obtener_habitacion(id)
 
         if habitacion is None:
-            return {"status": 404, "message": "Registro no encontrado."}
+            return {"status": 404, "message": "Registro no encontrado."}, 404
 
         habitacion.activa = False
 

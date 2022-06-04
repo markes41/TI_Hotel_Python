@@ -2,7 +2,7 @@ import jwt
 from mkapp import app
 from flask import request
 from services.usuarios_service import Usuarios_Service as usu_service
-from models.Usuario import UsuarioSchema as schema
+from models.usuario import UsuarioSchema as schema
 
 class AuthModule():
 

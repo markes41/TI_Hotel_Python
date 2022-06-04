@@ -1,6 +1,6 @@
 from flask import request
 from services.usuarios_service import Usuarios_Service as service
-from models.Usuario import UsuarioSchema as schema
+from models.usuario import UsuarioSchema as schema
 
 class Usuarios_Module:
 
@@ -12,7 +12,7 @@ class Usuarios_Module:
 
         return service.agregar_usuario(usu)
     
-    def modificar_usuario(self, id):
+    def modificar_usuario(id):
         usu_original = service.obtener_usuario(id)
 
         if usu_original is None:
@@ -33,7 +33,7 @@ class Usuarios_Module:
         usu = service.obtener_usuario(id)
 
         if usu is None:
-            return {"status": 404, "message": "Registro no encontrado."}
+            return {"status": 404, "message": "Registro no encontrado."}, 404
         
         return service.eliminar_usuario(usu)
         
@@ -43,6 +43,15 @@ class Usuarios_Module:
         uSchema = schema()
         
         if usu is None:
-            return {"status": 404, "message": "Registro no encontrado."}
+            return {"status": 404, "message": "Registro no encontrado."}, 404
         
         return {"status": 200, "result": uSchema.dump(usu)}
+
+    def obtener_usuarios():
+        usu = service.obtener_usuarios()
+        uSchema = schema(many=True)
+        
+        if usu is None:
+            return {"status": 404, "message": "Registro no encontrado."}, 404
+        
+        return {"status": 200, "result": uSchema.dump(usu)}, 200

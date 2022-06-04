@@ -20,6 +20,10 @@ services:
       - ./app:/app
     networks:
       - api-unlz
+    restart: on-failure
+    depends_on:
+      - db
 networks:
   api-unlz:
     name: api-unlz
+
