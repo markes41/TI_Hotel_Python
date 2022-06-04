@@ -4,7 +4,7 @@ WORKDIR /app
 
 COPY ./app.py /
 
-RUN pip install Flask psycopg2 gunicorn flask_sqlalchemy marshmallow marshmallow-sqlalchemy pyjwt flask-marshmallow
+RUN pip install Flask psycopg2 gunicorn flask_sqlalchemy marshmallow marshmallow-sqlalchemy pyjwt flask-marshmallow flask_swagger_ui
 
 CMD ["gunicorn", "-b", "0.0.0.0:8080", "app:app"]
 
