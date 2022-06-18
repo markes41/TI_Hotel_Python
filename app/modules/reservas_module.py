@@ -1,22 +1,26 @@
-from sqlalchemy import and_
 from flask import request
 from models.reserva import ReservaSchema
 from models.habitacion import HabitacionSchema
 from services.reservas_service import Reservas_Service as service
 from models.reserva import ReservaSchema as schema, Reserva
 from services.habitaciones_service import Habitaciones_Service as habitaciones_service
-from datetime import datetime
+from datetime import datetime, date
+from mkapp import app
 
 class Reservas_Module:
 
     base_url = "/reservas"
 
     def reservar_habitacion():
-        fecha_desde = datetime.strptime(request.json["fecha_desde"], '%Y-%m-%d')
-        fecha_hasta = datetime.strptime(request.json["fecha_hasta"], '%Y-%m-%d')
+        fecha_desde = datetime.strptime(request.json["fecha_desde"], app.config['DATE_FORMAT'])
+        fecha_hasta = datetime.strptime(request.json["fecha_hasta"], app.config['DATE_FORMAT'])
 
         if fecha_desde > fecha_hasta:
             return {"status": 404, "message": "La fecha de inicio no puede ser mayor a la fecha final."}, 404
+        
+        if fecha_desde < datetime.today() or fecha_hasta < datetime.today():
+            return {"status": 404, "message": "Las fechas elegidas no pueden ser menores a la fecha actual."}, 404
+        
         
         id_habitacion = request.json["id_habitacion"]
 
@@ -48,8 +52,11 @@ class Reservas_Module:
 
         
     def obtener_reservas_by_fecha(fecha_inicio, fecha_fin):
-        fecha_desde = datetime.strptime(fecha_inicio, '%Y-%m-%d')
-        fecha_hasta = datetime.strptime(fecha_fin, '%Y-%m-%d')
+        fecha_desde = datetime.strptime(fecha_inicio, app.config['DATE_FORMAT'])
+        fecha_hasta = datetime.strptime(fecha_fin, app.config['DATE_FORMAT'])
+
+        if fecha_desde > fecha_hasta:
+            return {"status": 404, "message": "La fecha de inicio no puede ser mayor a la fecha final."}, 404
 
         reservas = service.obtener_reservas_by_fecha(fecha_desde, fecha_hasta)
         habitaciones = habitaciones_service.obtener_habitaciones()
@@ -83,7 +90,7 @@ class Reservas_Module:
         return {"status": 200, "result": sReservas.dump(reservas)}
     
     def obtener_estado_habitaciones(fecha_str):
-        fecha = datetime.strptime(fecha_str, '%Y-%m-%d')
+        fecha = datetime.strptime(fecha_str, app.config['DATE_FORMAT'])
         reservas = service.obtener_reservas(fecha)
 
         if len(reservas) == 0:

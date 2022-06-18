@@ -1059,3 +1059,6 @@ app/services/__pycache__/habitaciones_service.cpython-310.pyc
 app/modules/__pycache__/reservas_module.cpython-310.pyc
 app/modules/__pycache__/habitaciones_module.cpython-310.pyc
 database/data/base/13757/16497
+app/__pycache__/mkapp.cpython-310.pyc
+app/modules/__pycache__/reservas_module.cpython-310.pyc
+app/routes/__pycache__/reservas_route.cpython-310.pyc

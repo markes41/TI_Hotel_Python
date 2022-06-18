@@ -27,7 +27,7 @@ def obtener_habitacion_by_dia(fecha_desde, fecha_hasta):
 @reservas_route.route(Reservas.base_url + '/getReservasByHabitacion/<int:id>', methods=['GET'])
 @error_middleware
 @token_required
-@roles_middleware("Cliente")
+@roles_middleware("Empleado")
 def obtener_reservas_by_Habitacion(id):
 	return Reservas.obtener_reservas_by_habitacion(id)
 
