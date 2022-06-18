@@ -49,3 +49,11 @@ def obtener_habitaciones():
 @roles_middleware("Empleado")
 def deshabilitar_habitacion(id):
 	return Habitaciones.deshabilitar_habitacion(id)
+
+@habitaciones_route.route(Habitaciones.base_url + '/get/precio/<precio>', methods=['GET'])
+@token_required
+@error_middleware
+@roles_middleware("Cliente")
+def obtener_habitaciones_precio(precio):
+	return Habitaciones.obtener_habitaciones_precio(precio)
+

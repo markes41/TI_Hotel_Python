@@ -1,9 +1,8 @@
 from flask_swagger_ui import get_swaggerui_blueprint
 from mkapp import app, db
 from routes import auth_route, habitaciones_route, usuarios_route, reservas_route
-from decorators.error import error_middleware
 
-### Especificaciones swagger documentación API###
+### Especificaciones swagger documentación API ###
 SWAGGER_URL = '/api/docs'
 API_URL = '/static/swagger.json'
 SWAGGERUI_BLUEPRINT = get_swaggerui_blueprint(
@@ -14,7 +13,7 @@ SWAGGERUI_BLUEPRINT = get_swaggerui_blueprint(
     }
 )
 app.register_blueprint(SWAGGERUI_BLUEPRINT, url_prefix=SWAGGER_URL)
-##################################################
+###################################################
 
 ####### ROUTES ENDPOINTS #######
 

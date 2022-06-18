@@ -541,6 +541,53 @@
               ]
             }
           },
+          "/habitaciones/get/precio/{precio}": {
+            "get": {
+              "tags": [
+                "Habitaciones Request"
+              ],
+              "parameters": [
+                {
+                  "in": "path",
+                  "name": "precio",
+                  "required": true,
+                  "description": "Habitacion request Precio"
+                }
+              ],
+              "summary": "Obtiene un listado con las reservas a existentes entre la fecha proporcionada.",
+              "responses": {
+                "201": {
+                  "description": "OK",
+                  "schema": {
+                    "$ref": "#/components/schemas/responseSchemaOk"
+                  }
+                },
+                "400": {
+                  "description": "BAD",
+                  "schema": {
+                    "$ref": "#/components/schemas/responseSchemaBad"
+                  }
+                },
+                "404": {
+                  "description": "BAD",
+                  "schema": {
+                    "$ref": "#/components/schemas/responseSchemaBad"
+                  }
+                },
+                "500": {
+                  "description": "BAD",
+                  "schema": {
+                    "$ref": "#/components/schemas/responseSchemaBad"
+                  }
+                }
+              },
+              "security": [
+                {
+                  "bearerAuth": []
+                }
+              ]
+            }
+          },
           "/reservas/reservarHabitacion":{
             "post": {
               "summary": "Reservar una habitación.",
@@ -594,7 +641,7 @@
               ]
             }
           },
-          "/reservas/getReservas/{id}": {
+          "/reservas/getHabitacionesByFecha/{fecha_desde}/{fecha_hasta}": {
             "get": {
               "tags": [
                 "Reservas Request"
@@ -602,12 +649,18 @@
               "parameters": [
                 {
                   "in": "path",
-                  "name": "id",
+                  "name": "fecha_desde",
                   "required": true,
-                  "description": "Habitacion request Id"
+                  "description": "Reserva request Fecha Desde"
+                },
+                {
+                  "in": "path",
+                  "name": "fecha_hasta",
+                  "required": true,
+                  "description": "Reserva request Fecha Hasta"
                 }
               ],
-              "summary": "Obtiene un listado con las reservas a existentes.",
+              "summary": "Obtiene un listado con las reservas a existentes entre la fecha proporcionada.",
               "responses": {
                 "201": {
                   "description": "OK",
@@ -641,7 +694,54 @@
               ]
             }
           },
-          "/reservas/getHabitacionesByFecha/{fecha}": {
+          "/reservas/getReservasByHabitacion/{id}": {
+            "get": {
+              "tags": [
+                "Reservas Request"
+              ],
+              "parameters": [
+                {
+                  "in": "path",
+                  "name": "id",
+                  "required": true,
+                  "description": "Reserva request Id Habitación"
+                }
+              ],
+              "summary": "Obtiene un listado con las reservas que posee la habitación con el id especificado.",
+              "responses": {
+                "201": {
+                  "description": "OK",
+                  "schema": {
+                    "$ref": "#/components/schemas/responseSchemaOk"
+                  }
+                },
+                "400": {
+                  "description": "BAD",
+                  "schema": {
+                    "$ref": "#/components/schemas/responseSchemaBad"
+                  }
+                },
+                "404": {
+                  "description": "BAD",
+                  "schema": {
+                    "$ref": "#/components/schemas/responseSchemaBad"
+                  }
+                },
+                "500": {
+                  "description": "BAD",
+                  "schema": {
+                    "$ref": "#/components/schemas/responseSchemaBad"
+                  }
+                }
+              },
+              "security": [
+                {
+                  "bearerAuth": []
+                }
+              ]
+            }
+          },
+          "/reservas/getEstadoHabitaciones/{fecha}": {
             "get": {
               "tags": [
                 "Reservas Request"
@@ -654,7 +754,7 @@
                   "description": "Reserva request Fecha"
                 }
               ],
-              "summary": "Obtiene un listado con las reservas a existentes entre la fecha proporcionada.",
+              "summary": "Obtiene un listado de las habitaciones activas discriminando por ocupadas y disponibles.",
               "responses": {
                 "201": {
                   "description": "OK",

@@ -50,7 +50,7 @@ class Usuarios_Module:
     def obtener_usuarios():
         usu = service.obtener_usuarios()
         uSchema = schema(many=True)
-        
+
         if usu is None:
             return {"status": 404, "message": "Registro no encontrado."}, 404
         

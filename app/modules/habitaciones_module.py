@@ -10,6 +10,9 @@ class Habitaciones_Module:
         sHabitacion = schema()
         habitacion = sHabitacion.load(request.json)
 
+        if(habitacion.precio < 0):
+            return {"status": 404, "message": "Introduzca un precio válido."}, 404
+
         return service.agregar_habitacion(habitacion)
 
     def modificar_habitacion(id):
@@ -18,9 +21,10 @@ class Habitaciones_Module:
         if hab_original is None:
             return {"status": 404, "message": "Registro no encontrado."}
 
-        sHabitacion = schema()
-
         hab_original.precio = request.json["precio"]
+
+        if(hab_original.precio < 0):
+            return {"status": 404, "message": "Introduzca un precio válido."}, 404
 
         return service.modificar_habitacion(hab_original)
 
@@ -33,7 +37,7 @@ class Habitaciones_Module:
         return service.eliminar_habitacion(habitacion)
 
     def obtener_habitaciones():
-        habitaciones = service.obtener_habitaciones_reservadas()
+        habitaciones = None
 
         if len(habitaciones) == 0:
             return {"status": 404, "message": "No hay habitaciones disponibles."}, 404
@@ -59,3 +63,13 @@ class Habitaciones_Module:
         habitacion.activa = False
 
         return service.modificar_habitacion(habitacion)
+
+    def obtener_habitaciones_precio(precio):
+
+        habitaciones = service.obtener_habitaciones_precio(precio)
+
+        if len(habitaciones) == 0:
+            return {"status": 404, "message": "No se encontraron registros."}, 404
+        
+        habitacionSchema = schema(many=True)
+        return {"status": 200, "result": habitacionSchema.dump(habitaciones)}

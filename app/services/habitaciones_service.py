@@ -1,5 +1,5 @@
+from models.habitacion import Habitacion
 from mkapp import db
-from models.habitacion import Habitacion, HabitacionSchema
 
 class Habitaciones_Service:
 
@@ -20,9 +20,13 @@ class Habitaciones_Service:
 
     def obtener_habitacion(id):
         return Habitacion.query.get(id)
-
-    def obtener_habitaciones_reservadas():  
-        return Habitacion.query.filter_by(reservada = False).all()
     
     def obtener_habitaciones_precio(precio_elegido):
-        return Habitacion.query.filter_by(precio < precio_elegido).all()
+        return Habitacion.query.filter(
+            Habitacion.precio < precio_elegido
+        ).all()
+
+    def obtener_habitaciones():
+        return Habitacion.query.filter(
+            Habitacion.activa == True
+        ).all()
