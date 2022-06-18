@@ -443,6 +443,45 @@
               ]
             }
           },
+          "/habitaciones/getHabitaciones": {
+            "get": {
+              "tags": [
+                "Habitaciones Request"
+              ],
+              "summary": "Obtiene un listado de las habitaciones, sin importar su estado.",
+              "responses": {
+                "201": {
+                  "description": "OK",
+                  "schema": {
+                    "$ref": "#/components/schemas/responseSchemaOk"
+                  }
+                },
+                "400": {
+                  "description": "BAD",
+                  "schema": {
+                    "$ref": "#/components/schemas/responseSchemaBad"
+                  }
+                },
+                "404": {
+                  "description": "BAD",
+                  "schema": {
+                    "$ref": "#/components/schemas/responseSchemaBad"
+                  }
+                },
+                "500": {
+                  "description": "BAD",
+                  "schema": {
+                    "$ref": "#/components/schemas/responseSchemaBad"
+                  }
+                }
+              },
+              "security": [
+                {
+                  "bearerAuth": []
+                }
+              ]
+            }
+          },
           "/habitaciones/deshabilitar/{id}": {
             "parameters": [
               {
@@ -554,7 +593,7 @@
                   "description": "Habitacion request Precio"
                 }
               ],
-              "summary": "Obtiene un listado con las reservas a existentes entre la fecha proporcionada.",
+              "summary": "Obtiene un listado de las habitaciones con un precio menor al proporcionado.",
               "responses": {
                 "201": {
                   "description": "OK",
@@ -590,7 +629,7 @@
           },
           "/reservas/reservarHabitacion":{
             "post": {
-              "summary": "Reservar una habitación.",
+              "summary": "Reserva una habitación.",
               "tags": [
                 "Reservas Request"
               ],
@@ -660,7 +699,7 @@
                   "description": "Reserva request Fecha Hasta"
                 }
               ],
-              "summary": "Obtiene un listado con las reservas a existentes entre la fecha proporcionada.",
+              "summary": "Obtiene un listado con las habitaciones disponibles entre las fechas proporcionadas.",
               "responses": {
                 "201": {
                   "description": "OK",
@@ -754,7 +793,7 @@
                   "description": "Reserva request Fecha"
                 }
               ],
-              "summary": "Obtiene un listado de las habitaciones activas discriminando por ocupadas y disponibles.",
+              "summary": "Obtiene un listado de las habitaciones activas discriminando por ocupadas y disponibles, según la fecha proporcionada.",
               "responses": {
                 "201": {
                   "description": "OK",

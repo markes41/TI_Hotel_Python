@@ -1055,3 +1055,7 @@ database/data/base/13757/16501
 database/data/base/13757/24679
 database/data/base/13757/24680
 database/data/base/13757/24684
+app/services/__pycache__/habitaciones_service.cpython-310.pyc
+app/modules/__pycache__/reservas_module.cpython-310.pyc
+app/modules/__pycache__/habitaciones_module.cpython-310.pyc
+database/data/base/13757/16497

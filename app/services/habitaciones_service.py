@@ -1,5 +1,6 @@
 from models.habitacion import Habitacion
 from mkapp import db
+from sqlalchemy import and_
 
 class Habitaciones_Service:
 
@@ -23,10 +24,8 @@ class Habitaciones_Service:
     
     def obtener_habitaciones_precio(precio_elegido):
         return Habitacion.query.filter(
-            Habitacion.precio < precio_elegido
+            and_(Habitacion.precio < precio_elegido, Habitacion.activa == True)
         ).all()
 
     def obtener_habitaciones():
-        return Habitacion.query.filter(
-            Habitacion.activa == True
-        ).all()
+        return Habitacion.query.filter().all()

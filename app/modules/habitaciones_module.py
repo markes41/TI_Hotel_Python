@@ -11,7 +11,7 @@ class Habitaciones_Module:
         habitacion = sHabitacion.load(request.json)
 
         if(habitacion.precio < 0):
-            return {"status": 404, "message": "Introduzca un precio válido."}, 404
+            return {"status": 404, "message": "El precio debe ser mayor a 0."}, 404
 
         return service.agregar_habitacion(habitacion)
 

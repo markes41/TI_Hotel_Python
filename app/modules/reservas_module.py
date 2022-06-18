@@ -52,22 +52,23 @@ class Reservas_Module:
         fecha_hasta = datetime.strptime(fecha_fin, '%Y-%m-%d')
 
         reservas = service.obtener_reservas_by_fecha(fecha_desde, fecha_hasta)
+        habitaciones = habitaciones_service.obtener_habitaciones()
+        
+        sHabitaciones = HabitacionSchema(many = True)
 
         if len(reservas) == 0:
-            return {"status": 404, "message": "No se encontraron registros."}, 404
+            return {"status": 200, "result": sHabitaciones.dump(habitaciones)}
 
         id_habitaciones = []
         for reserva in reservas:
             if not reserva.id_habitacion in id_habitaciones:
                 id_habitaciones.append(reserva.id_habitacion)
 
-        habitaciones = habitaciones_service.obtener_habitaciones()
-
         habitaciones_libres = []
+
         for id in id_habitaciones:
             habitaciones_libres = list(filter(lambda m: m.id != id, habitaciones))
         
-        sHabitaciones = HabitacionSchema(many = True)
 
         return {"status": 200, "result": sHabitaciones.dump(habitaciones_libres)}
 
@@ -114,5 +115,5 @@ class Reservas_Module:
                         "precio": habitacion.precio
                     }
                 )
-                
+
         return {"status": 200, "result": habitaciones_estado}
